@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retriever Polytope - Destination Earth Pipeline</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#8B5CF6',
+                        dark: '#0F172A',
+                        card: 'rgba(255, 255, 255, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.3) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.3) 0, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .code-block {
+            background: #0B1120;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            color: #E2E8F0;
+            overflow-x: auto;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-secondary selection:text-white pb-16">
+
+    <div class="max-w-5xl mx-auto px-6 pt-20">
+        <!-- Header -->
+        <header class="text-center mb-16 animate-fade-in-down">
+            <h1 class="text-5xl font-bold mb-4 tracking-tight"><span class="gradient-text">Retriever Polytope</span></h1>
+            <p class="text-xl text-slate-400 font-light max-w-2xl mx-auto">
+                An automated Python data retrieval and processing pipeline for downloading meteorological, ocean, and climate data via the Destination Earth Polytope API.
+            </p>
+        </header>
+
+        <!-- Content Grid -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Key Components -->
+            <div class="glass-card p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-3 bg-blue-500/10 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">Key Components</h3>
+                </div>
+                <ul class="space-y-4 text-slate-300">
+                    <li class="flex gap-3">
+                        <span class="text-secondary opacity-80 mt-1">▹</span>
+                        <div><strong class="text-white font-medium">main.py</strong>: The primary orchestrator script that maps out settings, handles the loop, and triggers processing.</div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-secondary opacity-80 mt-1">▹</span>
+                        <div><strong class="text-white font-medium">config.yaml</strong>: The central schema mapping defining output schemas, variables, streams, and resolutions.</div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-secondary opacity-80 mt-1">▹</span>
+                        <div><strong class="text-white font-medium">desp-authentication.py</strong>: Interacts with the Destination Earth IAM to generate Polytope OAuth2 tokens.</div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-secondary opacity-80 mt-1">▹</span>
+                        <div><strong class="text-white font-medium">src/ directory</strong>: Source modules handling extraction logic (<code class="bg-slate-800 px-1 py-0.5 rounded text-sm">auth.py</code>, <code class="bg-slate-800 px-1 py-0.5 rounded text-sm">data_loader.py</code>, <code class="bg-slate-800 px-1 py-0.5 rounded text-sm">processor.py</code>).</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Prerequisites & Setup -->
+            <div class="glass-card p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-3 bg-purple-500/10 rounded-lg">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold">Prerequisites & Setup</h3>
+                </div>
+                
+                <h4 class="text-sm uppercase tracking-wider text-slate-400 font-semibold mb-2">Prerequisites</h4>
+                <ul class="text-slate-300 text-sm mb-6 space-y-3">
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Python 3.x</li>
+                    <li class="flex flex-col gap-1">
+                        <div class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Dependencies:</div>
+                        <div class="pl-6 flex flex-wrap gap-2 mt-1">
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">pyyaml</code>
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">python-dotenv</code>
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">requests</code>
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">lxml</code>
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">conflator</code>
+                            <code class="bg-black/30 px-2 py-1 rounded border border-white/5 text-indigo-200 font-mono text-xs">pydantic</code>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">✓</span> Polytope CLI and API libraries (required by data_loader.py)</li>
+                </ul>
+
+                <h4 class="text-sm uppercase tracking-wider text-slate-400 font-semibold mb-2 border-t border-white/5 pt-4">Environment Security (.env)</h4>
+                <p class="text-slate-300 text-sm mb-3">Place your Destination Earth credentials in a `.env` file at the root repository:</p>
+                <div class="code-block mb-6">DESP_PASSWORD="your_actual_password_here"</div>
+                <p class="text-slate-400 text-sm border-l-2 border-indigo-500 pl-3">
+                    Your username should be maintained inside the <b>config.yaml</b> file. 
+                </p>
+            </div>
+        </div>
+
+        <!-- Configuration Panel -->
+        <div class="glass-card p-8 mb-8 border-t-4 border-t-emerald-500">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-emerald-500/10 rounded-lg">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold">Config File Details <span class="text-sm text-slate-500 font-normal ml-2">(config.yaml)</span></h3>
+                </div>
+                <!-- Variable Button -->
+                <a href="https://sbeyer.net/destine-variables.html" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg flex flex-shrink-0 items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    DestinE Variables List
+                </a>
+            </div>
+            
+            <p class="text-slate-300 mb-6 font-light">The `config.yaml` file drives the data extraction. You must set your `user` and define your target datasets, parameters, and time ranges.</p>
+            
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                <div>
+                    <h4 class="text-white font-medium mb-1 border-b border-white/10 pb-1">Essential Settings</h4>
+                    <ul class="text-sm text-slate-400 space-y-2 mt-2">
+                        <li><strong class="text-emerald-300">user:</strong> Your DESP username.</li>
+                        <li><strong class="text-emerald-300">output_dir:</strong> Template for dynamic sub-folders (e.g. `./output/{experiment}/{param}`).</li>
+                        <li><strong class="text-emerald-300">live_request:</strong> Set to `true` to authenticate via DESP IAM.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-1 border-b border-white/10 pb-1">Dataset Requests</h4>
+                    <ul class="text-sm text-slate-400 space-y-2 mt-2">
+                        <li><strong class="text-blue-300">param:</strong> The Variable ID you intend to extract (e.g. 235055).</li>
+                        <li><strong class="text-blue-300">date:</strong> Formatting specifies the range: <br/><code class="text-slate-300 bg-black/30 px-1 py-0.5 rounded">20180101/to/20241231</code> or single days <code class="text-slate-300 bg-black/30 px-1 py-0.5 rounded">20180101</code>.</li>
+                        <li><strong class="text-blue-300">levtype:</strong> "sfc", "pl", "o2d", or "o3d".</li>
+                    </ul>
+                </div>
+                <div class="md:col-span-2 mt-4 bg-black/20 p-4 rounded-lg border border-white/5 relative">
+                    <p class="text-sm text-slate-300">
+                        <svg class="w-4 h-4 inline-block text-amber-500 mr-1 pb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <strong>Confused about which "param" (variable) ID or "dataset" names to use?</strong><br/>
+                        Refer to the complete interactive reference table outlining the mappings: 
+                        <a href="https://sbeyer.net/destine-variables.html" target="_blank" class="text-primary hover:text-blue-300 underline underline-offset-2">Destination Earth Variables Overview</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <h4 class="text-white font-medium mb-2 border-b border-white/10 pb-1">Processing Block</h4>
+                <p class="text-sm text-slate-400">If you wish to convert GRIB data to NetCDF dynamically, set `nc: true` in the processing section. Also, specify the `target_param_name` specifically for what the NetCDF variable should be titled.</p>
+            </div>
+        </div>
+
+        <!-- How To Use Full Width -->
+        <div class="glass-card p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-2">Execute the Pipeline</h3>
+                    <p class="text-slate-400">Once your environment and YAML configurations are established, start the orchestration script directly. It will systematically crawl the requested dataset, authenticate, parse out the GRIB file, and execute conversions dynamically if requested.</p>
+                </div>
+                
+                <div class="flex-shrink-0">
+                    <div class="bg-black/40 border border-slate-700/50 rounded-lg p-4 flex items-center justify-between w-64">
+                        <code class="text-emerald-400 font-mono text-sm">python main.py</code>
+                        <button class="text-slate-500 hover:text-white transition-colors" title="Copy code" onclick="navigator.clipboard.writeText('python main.py')">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>

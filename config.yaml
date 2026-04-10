@@ -1,0 +1,38 @@
+# config.yaml
+
+settings:
+  live_request: true
+  output_dir: "./output_data/{experiment}/{param}/E{realization}" 
+  auth_script: "desp-authentication.py"
+  user: "amaljohn"
+
+request:
+  activity: "story-nudging"
+  class: "d1"
+  dataset: "climate-dt"
+  experiment: "hist"
+  generation: "2"
+  realization: "5"
+  levtype: "sfc" #"sfc" "pl" "o2d" o3d""
+  # === DATE RANGE ===
+  # Use "YYYYMMDD/to/YYYYMMDD" to get separate files for every day in the range.
+  # Or just use a single string "20180301" for one day.
+  date: "20180101/to/20241231"
+  model: "ifs-fesom"
+  expver: "0001"
+  param: "235055"
+  resolution: "high"
+  stream: "clte"
+  type: "fc"
+  time: "0000/0100/0200/0300/0400/0500/0600/0700/0800/0900/1000/1100/1200/1300/1400/1500/1600/1700/1800/1900/2000/2100/2200/2300"
+  #time: "0000" # for ocean variables
+  #levelist: "500" #for pl variables only
+
+processing:
+  # === OPTIONAL CONVERSION ===
+  # true: Save GRIB -> Convert to NetCDF -> Keep both
+  # false: Save GRIB only
+  nc: false 
+  
+  # The variable name to extract (check your GRIB table if unsure)
+  target_param_name: "10u"
