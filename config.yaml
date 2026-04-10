@@ -4,7 +4,7 @@ settings:
   live_request: true
   output_dir: "./output_data/{experiment}/{param}/E{realization}" 
   auth_script: "desp-authentication.py"
-  user: "amaljohn"
+  user: "your user name"
 
 request:
   activity: "story-nudging"
